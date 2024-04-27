@@ -1,0 +1,19 @@
+---
+type Props = { links: [username: string, service: string, href: string][] };
+
+const { links } = Astro.props;
+---
+
+<div class="flex gap-2 flex-wrap">
+  {
+    links.map(([username, service, href]) => (
+      <a
+        href={href}
+        class="px-2 rounded-lg border border-neutral-300 text-neutral-600 underline-offset-4 decoration-neutral-400"
+      >
+        <span class="select-none text-neutral-400">@</span>
+        <span>{service}</span>: <span class="username">{username}</span>
+      </a>
+    ))
+  }
+</div>

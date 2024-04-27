@@ -1,0 +1,22 @@
+---
+type Props = { tags: string[] };
+
+const { tags } = Astro.props;
+---
+
+<div class="flex gap-2 flex-wrap">
+  {
+    tags.map((tag) => (
+      <span class="px-4 rounded-full border border-neutral-300 text-neutral-600">
+        {tag}
+      </span>
+    ))
+  }
+</div>
+
+<style>
+  div > span::before {
+    content: "#";
+    @apply text-neutral-400;
+  }
+</style>

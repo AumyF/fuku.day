@@ -1,0 +1,106 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Tag from "./_index/tag.astro";
+import Social from "./_index/social.astro";
+import { getEntry } from "astro:content";
+
+const t = await getEntry("blog", "2024-04-21-music-2024-q1");
+const sa = await getEntry("blog", "2024-04-23-sanabi");
+const re = await getEntry("blog", "2024-04-27-slash-blog");
+---
+
+<Layout title="Aumy">
+  <div>
+    <div>
+      <main class="flex flex-wrap gap-4 justify-center">
+        <section class="card basis-80 grow flex flex-col-reverse">
+          <div
+            class="uppercase text-right font-bold text-gray-500 flex before:border-t before:border-gray-400 before:grow gap-2 items-center"
+          >
+            Profile
+          </div>
+          <div class="vstack gap-4">
+            <div class="vstack gap-2">
+              <h1 class="text-4xl">Aumy / おーみー</h1>
+            </div>
+
+            <Tag
+              tags={[
+                "otaku",
+                "web",
+                "web_frontend",
+                "user_interfaces",
+                "developer_experience",
+                "programming_languages",
+                "functional_programming",
+                "kawaii",
+                "vscode",
+                "neovim",
+                "helix",
+                "typescript",
+                "rust",
+                "nix",
+              ]}
+            />
+
+            <Social
+              links={[
+                ["aumy_f", "twitter", "https://twitter.com/aumy_f"],
+                ["aumyf", "github", "https://github.com/aumyf"],
+                ["aumy", "scrapbox", "https://scrapbox.com/aumy"],
+              ]}
+            />
+          </div>
+        </section>
+        <section
+          class="card basis-80 grow max-w-4xl flex flex-col-reverse justify-between"
+        >
+          <div
+            class="uppercase text-right font-bold text-gray-500 flex before:border-t before:border-gray-400 before:grow gap-2 items-center"
+          >
+            Featured Post
+          </div>
+          <div class="vstack gap-4">
+            <div class="text-3xl">{t.data.title}</div>
+            <p>{t.data.description}</p>
+            <div class="text-right">
+              <a href={`/blog/${t.slug}`}>もっと読む</a>
+            </div>
+          </div>
+        </section>
+        <section
+          class="card basis-80 grow max-w-4xl flex flex-col-reverse justify-between"
+        >
+          <div
+            class="uppercase text-right font-bold text-gray-500 flex before:border-t before:border-gray-400 before:grow gap-2 items-center"
+          >
+            Featured Post
+          </div>
+          <div class="vstack gap-4">
+            <div class="text-3xl">{sa.data.title}</div>
+            <p>{sa.data.description}</p>
+            <div class="text-right">
+              <a href={`/blog/${sa.slug}`}>もっと読む</a>
+            </div>
+          </div>
+        </section>
+        <section
+          class="card basis-80 grow max-w-4xl flex flex-col-reverse justify-between"
+        >
+          <div
+            class="uppercase text-right font-bold text-gray-500 flex before:border-t before:border-gray-400 before:grow gap-2 items-center"
+          >
+            Featured Post
+          </div>
+          <div class="vstack gap-4">
+            <div class="text-3xl">{re.data.title}</div>
+            <p>{re.data.description}</p>
+            <div class="text-right">
+              <a href={`/blog/${re.slug}`}>もっと読む</a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,58 @@
+---
+type Props = { caption?: string; src?: string };
+
+const { caption, src } = Astro.props;
+
+const videoid = src?.match(/https:\/\/youtu\.be\/([a-zA-Z0-9\-]+)\??.*/)?.[1];
+
+if (src && !videoid) {
+  throw new Error("failed to parse videoid");
+}
+---
+
+<div class="container">
+  <div class="wrapper">
+    <slot />
+    {
+      videoid && (
+        <iframe
+          width="100%"
+          height="315"
+          src={`https://www.youtube.com/embed/${videoid}`}
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        />
+      )
+    }
+  </div>
+  {
+    caption && (
+      <div class="caption">
+        {caption}
+        <slot name="caption" />
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .container {
+    margin-inline: auto;
+    max-width: 560px;
+    margin-block: var(--s0);
+    & > .wrapper {
+      border-radius: 16px;
+      overflow: hidden;
+    }
+  }
+  .wrapper :global(iframe) {
+    width: 100%;
+  }
+  .caption {
+    margin-top: var(--s-2);
+    color: var(--fg-weak);
+    font-size: 0.9em;
+  }
+</style>

@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const posts = await getCollection("blog");
+posts.reverse();
+---
+
+<Layout title="Blog index / Aumy">
+  <div class="card vstack gap-5">
+    <h1 class="text-4xl mb-4">Blog Index</h1>
+    {
+      posts.map((post) => {
+        return (
+          <article>
+            <div class="block text-2xl underline-offset-4 mb-2">
+              <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+            </div>
+
+            <div>{post.data.description}</div>
+          </article>
+        );
+      })
+    }
+  </div>
+</Layout>

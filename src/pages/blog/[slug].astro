@@ -1,0 +1,56 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getEntryBySlug } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+export const getStaticPaths = (async () => {
+  const blog = await getCollection("blog");
+  return blog.map((entry) => ({ params: { slug: entry.slug } }));
+}) satisfies GetStaticPaths;
+
+const post = await getEntryBySlug("blog", Astro.params.slug);
+const render = await post.render();
+---
+
+<Layout title="Blog index / Aumy" description={post.data.description}>
+  <div class="card">
+    <article>
+      <h1 class="text-4xl mb-6">{post.data.title}</h1>
+      <render.Content />
+    </article>
+  </div>
+</Layout>
+
+<style>
+  article {
+    letter-spacing: 0.03em;
+  }
+  article :global(h2) {
+    @apply text-3xl border-l-4 border-current pl-2 my-5;
+  }
+  article :global(h3) {
+    @apply text-2xl my-3;
+  }
+  article :global(h4) {
+    @apply text-lg my-3;
+  }
+  article :global(p + p) {
+    @apply mt-3;
+  }
+  article :global(hr) {
+    @apply my-2 border-t border-neutral-300;
+  }
+  article :global(ul, ol) {
+    @apply pl-4;
+  }
+  article :global(ul) {
+    @apply list-disc;
+  }
+  article :global(ol) {
+    @apply list-decimal;
+  }
+  article :global(blockquote) {
+    @apply pl-2 border-l border-neutral-600;
+  }
+</style>

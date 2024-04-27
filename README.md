@@ -1,0 +1,3 @@
+# fuku.day
+
+my website

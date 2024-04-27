@@ -1,0 +1,74 @@
+---
+import Header from "./components/header.astro";
+import Footer from "./components/footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html class="bg-neutral-50 text-gray-700 leading-loose" lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:title" content={Astro.props.title} />
+    <meta
+      property="og:description"
+      content={Astro.props.description || "AumyF's website"}
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="px-4">
+      <div
+        class="vstack min-h-screen max-w-6xl mx-auto gap-4 selection:bg-pink-200"
+      >
+        <Header />
+        <slot />
+        <Footer />
+      </div>
+    </div>
+  </body>
+</html>
+<style is:global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  @layer components {
+    .vstack {
+      @apply flex flex-col;
+    }
+    .card {
+      @apply border-l border-gray-400 px-6;
+    }
+  }
+
+  :root {
+    font-family: sans-serif;
+  }
+
+  a {
+    color: var(--accent);
+    @apply underline-offset-4;
+    text-decoration: underline 1px;
+  }
+
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+  }
+</style>

@@ -13,8 +13,8 @@ const post = await getEntryBySlug("blog", Astro.params.slug);
 const render = await post.render();
 ---
 
-<Layout title="Blog index / Aumy" description={post.data.description}>
-  <div class="card">
+<Layout title={post.data.title} description={post.data.description}>
+  <div class="lg:card break-words">
     <article>
       <h1 class="text-4xl mb-6">{post.data.title}</h1>
       <render.Content />

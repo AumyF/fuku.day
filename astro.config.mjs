@@ -8,12 +8,13 @@ import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://fuku.day",
   integrations: [tailwindcss(), svelte(), mdx()],
   vite: {
     css: {
       lightningcss: {
-        targets: browserslistToTargets(browserslist("defaults"))
-      }
-    }
-  }
+        targets: browserslistToTargets(browserslist("defaults")),
+      },
+    },
+  },
 });

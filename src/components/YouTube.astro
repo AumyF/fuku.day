@@ -1,44 +1,34 @@
 ---
-type Props = { caption?: string; src?: string };
+type Props = { caption?: string; src?: string; title?: string };
 
 const { caption, src } = Astro.props;
 
-const videoid = src?.match(/https:\/\/youtu\.be\/([a-zA-Z0-9\-]+)\??.*/)?.[1];
+const videoid = src?.match(/https:\/\/youtu\.be\/([a-zA-Z0-9\-_]+)\??.*/)?.[1];
 
 if (src && !videoid) {
   throw new Error("failed to parse videoid");
 }
 ---
 
-<div class="container">
+<div class="yt-container">
   <div class="wrapper">
     <slot />
     {
       videoid && (
-        <iframe
-          width="100%"
-          height="315"
-          src={`https://www.youtube.com/embed/${videoid}`}
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-        />
+        <lite-youtube videoid={videoid} autoload posterquality="default" />
       )
     }
   </div>
-  {
-    caption && (
-      <div class="caption">
-        {caption}
-        <slot name="caption" />
-      </div>
-    )
-  }
+  <div class="caption">
+    {caption}
+    <slot name="caption" />
+  </div>
 </div>
 
+<script src="@justinribeiro/lite-youtube/lite-youtube.js"></script>
+
 <style>
-  .container {
+  .yt-container {
     margin-inline: auto;
     max-width: 560px;
     margin-block: 1rem;

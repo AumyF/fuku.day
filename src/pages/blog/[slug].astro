@@ -14,11 +14,45 @@ const render = await post.render();
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
-  <div class="lg:card break-words">
-    <article>
-      <h1 class="text-4xl mb-6">{post.data.title}</h1>
-      <render.Content />
-    </article>
+  <div class="flex justify-center gap-4">
+    <div class="lg:card [overflow-wrap:anywhere] max-w-3xl">
+      <article>
+        <h1 class="text-4xl mb-6">{post.data.title}</h1>
+        <render.Content />
+      </article>
+    </div>
+    <ul class="space-y-1 hidden card lg:block sticky h-min top-2">
+      {
+        render.headings.map((heading) => {
+          return (
+            <li>
+              {(() => {
+                switch (heading.depth) {
+                  case 2:
+                    return (
+                      <a class={`block pl-2`} href={`#${heading.slug}`}>
+                        {heading.text}
+                      </a>
+                    );
+                  case 3:
+                    return (
+                      <a class={`block pl-4`} href={`#${heading.slug}`}>
+                        {heading.text}
+                      </a>
+                    );
+                  case 4:
+                    return (
+                      <a class={`block pl-6`} href={`#${heading.slug}`}>
+                        {heading.text}
+                      </a>
+                    );
+                }
+              })()}
+            </li>
+          );
+        })
+      }
+    </ul>
   </div>
 </Layout>
 

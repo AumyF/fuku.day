@@ -35,11 +35,9 @@ if (src && !videoid) {
     & > .wrapper {
       border-radius: 16px;
       overflow: hidden;
-      height: 315px;
+      aspect-ratio: 16 / 9;
+      max-width: 560px;
     }
-  }
-  .wrapper :global(iframe) {
-    height: 315px;
   }
   .caption {
     margin-top: 0.5rem;

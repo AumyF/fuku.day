@@ -15,7 +15,9 @@ const render = await post.render();
 
 <Layout title={post.data.title} description={post.data.description}>
   <div class="flex justify-center gap-4">
-    <div class="lg:card [overflow-wrap:anywhere] max-w-3xl">
+    <div
+      class="lg:card [overflow-wrap:anywhere] max-w-[min(theme(maxWidth.3xl),100%)]"
+    >
       <article>
         <h1 class="text-4xl mb-6">{post.data.title}</h1>
         <render.Content />

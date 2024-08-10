@@ -7,6 +7,7 @@ import { getEntry } from "astro:content";
 const t = await getEntry("blog", "2024-06-30-music-2024-q2");
 const sa = await getEntry("blog", "2024-06-18-rss");
 const re = await getEntry("blog", "2024-04-27-slash-blog");
+const aa = await getEntry("blog", "2024-08-10-tailwind");
 ---
 
 <Layout title="Aumy">
@@ -50,6 +51,22 @@ const re = await getEntry("blog", "2024-04-27-slash-blog");
                 ["aumy", "scrapbox", "https://scrapbox.com/aumy"],
               ]}
             />
+          </div>
+        </section>
+        <section
+          class="card basis-80 grow max-w-4xl flex flex-col-reverse justify-between"
+        >
+          <div
+            class="uppercase text-right font-bold text-gray-500 flex before:border-t before:border-gray-400 before:grow gap-2 items-center"
+          >
+            Featured Post
+          </div>
+          <div class="vstack gap-4">
+            <div class="text-3xl">{aa.data.title}</div>
+            <p>{aa.data.description}</p>
+            <div class="text-right">
+              <a href={`/blog/${aa.slug}`}>もっと読む</a>
+            </div>
           </div>
         </section>
         <section

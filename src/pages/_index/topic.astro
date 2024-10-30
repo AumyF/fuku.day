@@ -1,0 +1,26 @@
+---
+type Props = {
+  title: string;
+  description: string;
+  href: string;
+};
+---
+
+<section
+  class="card basis-80 grow max-w-4xl flex flex-col-reverse justify-between"
+>
+  <div
+    class="uppercase text-right font-bold flex before:border-t-2 before:border-black dark:before:border-white before:grow gap-2 items-center"
+  >
+    Featured Post
+  </div>
+  <div class="vstack gap-4">
+    <div class="text-2xl font-bold">
+      {Astro.props.title}
+    </div>
+    <p>{Astro.props.description}</p>
+    <div class="text-right">
+      <a href={Astro.props.href}>もっと読む</a>
+    </div>
+  </div>
+</section>

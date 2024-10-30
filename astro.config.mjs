@@ -10,6 +10,14 @@ import mdx from "@astrojs/mdx";
 export default defineConfig({
   site: "https://fuku.day",
   integrations: [tailwindcss(), svelte(), mdx()],
+  markdown: {
+    shikiConfig: {
+      themes: {
+        light: "github-light-default",
+        dark: "github-dark-default",
+      },
+    },
+  },
   vite: {
     css: {
       lightningcss: {

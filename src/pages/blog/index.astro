@@ -8,12 +8,12 @@ posts.reverse();
 
 <Layout title="Blog index / Aumy">
   <div class="card vstack gap-5">
-    <h1 class="text-4xl mb-4">Blog Index</h1>
+    <h1 class="text-3xl mb-4 font-bold">Blog Index</h1>
     {
       posts.map((post) => {
         return (
           <article>
-            <div class="block text-2xl underline-offset-4 mb-2">
+            <div class="block text-2xl underline-offset-4 mb-2 font-bold">
               <a href={`/blog/${post.slug}`}>{post.data.title}</a>
             </div>
 

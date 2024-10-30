@@ -19,7 +19,9 @@ const render = await post.render();
       class="lg:card [overflow-wrap:anywhere] max-w-[min(theme(maxWidth.3xl),100%)]"
     >
       <article>
-        <h1 class="text-4xl mb-6 leading-normal">{post.data.title}</h1>
+        <h1 class="text-3xl mb-6 leading-normal font-bold">
+          {post.data.title}
+        </h1>
         <render.Content />
       </article>
     </div>
@@ -72,7 +74,7 @@ const render = await post.render();
     @apply mt-3;
   }
   article :global(hr) {
-    @apply my-2 border-t border-neutral-300;
+    @apply my-2 border-t border-current;
   }
   article :global(ul, ol) {
     @apply pl-6;
@@ -84,7 +86,7 @@ const render = await post.render();
     @apply list-decimal;
   }
   article :global(blockquote) {
-    @apply pl-2 border-l border-neutral-600;
+    @apply pl-2 border-l border-current;
   }
   article :global(pre) {
     @apply px-4 py-2 rounded-md;

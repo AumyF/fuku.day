@@ -3,11 +3,14 @@ import Layout from "../layouts/Layout.astro";
 import Tag from "./_index/tag.astro";
 import Social from "./_index/social.astro";
 import { getEntry } from "astro:content";
+import Topic from "./_index/topic.astro";
 
-const t = await getEntry("blog", "2024-06-30-music-2024-q2");
-const sa = await getEntry("blog", "2024-06-18-rss");
-const re = await getEntry("blog", "2024-04-27-slash-blog");
-const aa = await getEntry("blog", "2024-08-10-tailwind");
+const topics = await Promise.all([
+  getEntry("blog", "2024-06-30-music-2024-q2"),
+  getEntry("blog", "2024-06-18-rss"),
+  getEntry("blog", "2024-04-27-slash-blog"),
+  getEntry("blog", "2024-08-10-tailwind"),
+]);
 ---
 
 <Layout title="Aumy">
@@ -16,13 +19,13 @@ const aa = await getEntry("blog", "2024-08-10-tailwind");
       <main class="flex flex-wrap gap-4 justify-center">
         <section class="card basis-80 grow flex flex-col-reverse">
           <div
-            class="uppercase text-right font-bold text-gray-500 flex before:border-t before:border-gray-400 before:grow gap-2 items-center"
+            class="uppercase text-right font-bold flex before:border-t-2 before:border-black dark:before:border-white before:grow gap-2 items-center"
           >
             Profile
           </div>
           <div class="vstack gap-4">
             <div class="vstack gap-2">
-              <h1 class="text-4xl">Aumy / おーみー</h1>
+              <h1 class="text-3xl font-bold">Aumy / おーみー</h1>
             </div>
 
             <Tag
@@ -35,9 +38,6 @@ const aa = await getEntry("blog", "2024-08-10-tailwind");
                 "programming_languages",
                 "functional_programming",
                 "kawaii",
-                "vscode",
-                "neovim",
-                "helix",
                 "typescript",
                 "rust",
                 "nix",
@@ -48,75 +48,37 @@ const aa = await getEntry("blog", "2024-08-10-tailwind");
               links={[
                 ["aumy_f", "twitter", "https://twitter.com/aumy_f"],
                 ["aumyf", "github", "https://github.com/aumyf"],
-                ["aumy", "scrapbox", "https://scrapbox.com/aumy"],
+                ["aumy", "cosense", "https://scrapbox.io/aumy"],
               ]}
             />
           </div>
         </section>
         <section
-          class="card basis-80 grow max-w-4xl flex flex-col-reverse justify-between"
+          class="card basis-80 grow flex flex-col-reverse justify-between"
         >
           <div
-            class="uppercase text-right font-bold text-gray-500 flex before:border-t before:border-gray-400 before:grow gap-2 items-center"
+            class="uppercase text-right font-bold flex before:border-t-2 before:border-black dark:before:border-white before:grow gap-2 items-center"
           >
-            Featured Post
+            Profile
           </div>
           <div class="vstack gap-4">
-            <div class="text-3xl">{aa.data.title}</div>
-            <p>{aa.data.description}</p>
-            <div class="text-right">
-              <a href={`/blog/${aa.slug}`}>もっと読む</a>
-            </div>
+            <div class="text-2xl font-bold">経歴</div>
+            <ul class="list-disc pl-6">
+              <li>2019.04-2022.03: 公立工業高校</li>
+              <li>2022.04-: 某社インターン</li>
+              <li>2023.06-2024.03: サイボウズ・ラボユース</li>
+            </ul>
           </div>
         </section>
-        <section
-          class="card basis-80 grow max-w-4xl flex flex-col-reverse justify-between"
-        >
-          <div
-            class="uppercase text-right font-bold text-gray-500 flex before:border-t before:border-gray-400 before:grow gap-2 items-center"
-          >
-            Featured Post
-          </div>
-          <div class="vstack gap-4">
-            <div class="text-3xl">{t.data.title}</div>
-            <p>{t.data.description}</p>
-            <div class="text-right">
-              <a href={`/blog/${t.slug}`}>もっと読む</a>
-            </div>
-          </div>
-        </section>
-        <section
-          class="card basis-80 grow max-w-4xl flex flex-col-reverse justify-between"
-        >
-          <div
-            class="uppercase text-right font-bold text-gray-500 flex before:border-t before:border-gray-400 before:grow gap-2 items-center"
-          >
-            Featured Post
-          </div>
-          <div class="vstack gap-4">
-            <div class="text-3xl">{sa.data.title}</div>
-            <p>{sa.data.description}</p>
-            <div class="text-right">
-              <a href={`/blog/${sa.slug}`}>もっと読む</a>
-            </div>
-          </div>
-        </section>
-        <section
-          class="card basis-80 grow max-w-4xl flex flex-col-reverse justify-between"
-        >
-          <div
-            class="uppercase text-right font-bold text-gray-500 flex before:border-t before:border-gray-400 before:grow gap-2 items-center"
-          >
-            Featured Post
-          </div>
-          <div class="vstack gap-4">
-            <div class="text-3xl">{re.data.title}</div>
-            <p>{re.data.description}</p>
-            <div class="text-right">
-              <a href={`/blog/${re.slug}`}>もっと読む</a>
-            </div>
-          </div>
-        </section>
+        {
+          topics.map((topic) => (
+            <Topic
+              title={topic.data.title}
+              description={topic.data.description}
+              href={`/blog/${topic.slug}`}
+            />
+          ))
+        }
       </main>
     </div>
   </div>

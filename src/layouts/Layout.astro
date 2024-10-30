@@ -11,7 +11,10 @@ const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html class="bg-neutral-50 text-gray-700 leading-loose" lang="ja">
+<html
+  class="bg-white text-black dark:bg-black dark:text-white leading-loose [scrollbar-color:black_white] dark:[scrollbar-color:white_black] [scrollbar-gutter:stable]"
+  lang="ja"
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
@@ -30,7 +33,7 @@ const { title } = Astro.props;
   <body>
     <div class="px-4">
       <div
-        class="vstack min-h-screen max-w-6xl mx-auto gap-4 selection:bg-neutral-500 selection:text-white"
+        class="vstack min-h-screen max-w-6xl mx-auto gap-4 selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black"
       >
         <Header />
         <slot />
@@ -49,7 +52,7 @@ const { title } = Astro.props;
       @apply flex flex-col;
     }
     .card {
-      @apply border-l border-gray-400 pl-4;
+      @apply border-l-2 border-black dark:border-white pl-4;
     }
   }
 
@@ -70,5 +73,20 @@ const { title } = Astro.props;
   img {
     display: block;
     width: 100%;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .astro-code {
+      @apply border border-current;
+    }
+    .astro-code,
+    .astro-code span {
+      color: var(--shiki-dark) !important;
+      background-color: var(--shiki-dark-bg) !important;
+      /* Optional, if you also want font styles */
+      font-style: var(--shiki-dark-font-style) !important;
+      font-weight: var(--shiki-dark-font-weight) !important;
+      text-decoration: var(--shiki-dark-text-decoration) !important;
+    }
   }
 </style>

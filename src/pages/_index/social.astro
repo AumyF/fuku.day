@@ -10,9 +10,7 @@ const { links } = Astro.props;
   {
     links.map(([username, service, href]) => (
       <a href={href} class="underline-offset-4">
-        <span class="select-none text-neutral-700 dark:text-neutral-400">
-          @
-        </span>
+        <span class="select-none">@</span>
         <span>{service}</span>: <span class="username">{username}</span>
       </a>
     ))

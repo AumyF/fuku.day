@@ -14,18 +14,11 @@ const render = await post.render();
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
-  <div class="flex justify-center gap-4">
-    <div
-      class="lg:card [overflow-wrap:anywhere] max-w-[min(theme(maxWidth.3xl),100%)]"
+  <div id="toc" popover class="peer z-50 bg-transparent p-2">
+    <!-- TODO: iOSとかで出たり入ったりするナビゲーションでsvhが動いちゃうんだけどこれってsafe-area-insetでいいんだっけ？ -->
+    <ul
+      class="space-y-1 max-h-[50svh] p-2 overflow-scroll bg-neutral-400/90 backdrop-blur border-2 border-black"
     >
-      <article>
-        <h1 class="text-3xl mb-6 leading-normal font-bold">
-          {post.data.title}
-        </h1>
-        <render.Content />
-      </article>
-    </div>
-    <ul class="space-y-1 hidden card lg:block sticky h-min top-2">
       {
         render.headings.map((heading) => {
           return (
@@ -34,19 +27,28 @@ const render = await post.render();
                 switch (heading.depth) {
                   case 2:
                     return (
-                      <a class={`block pl-2`} href={`#${heading.slug}`}>
+                      <a
+                        class={`block border-y-2 pl-2`}
+                        href={`#${heading.slug}`}
+                      >
                         {heading.text}
                       </a>
                     );
                   case 3:
                     return (
-                      <a class={`block pl-4`} href={`#${heading.slug}`}>
+                      <a
+                        class={`block border-y-2 pl-4`}
+                        href={`#${heading.slug}`}
+                      >
                         {heading.text}
                       </a>
                     );
                   case 4:
                     return (
-                      <a class={`block pl-6`} href={`#${heading.slug}`}>
+                      <a
+                        class={`block border-y-2 pl-6`}
+                        href={`#${heading.slug}`}
+                      >
                         {heading.text}
                       </a>
                     );
@@ -58,11 +60,34 @@ const render = await post.render();
       }
     </ul>
   </div>
+
+  <!-- 兄弟要素 -->
+  <div
+    class="w-fit z-50 fixed bottom-2 right-2 [--content:'開く'] peer-[&:popover-open]:[--content:'閉じる']"
+  >
+    <button
+      popovertarget="toc"
+      type="button"
+      class="px-4 bg-neutral-400/90 backdrop-blur border-2 border-black after:[content:var(--content)]"
+      >目次
+    </button>
+  </div>
+
+  <div
+    class="grow px-2 [overflow-wrap:anywhere] max-w-[min(theme(maxWidth.3xl),100%)] border-x-2 border-black"
+  >
+    <article>
+      <h1 class="text-3xl mb-6 leading-normal font-bold">
+        {post.data.title}
+      </h1>
+      <render.Content />
+    </article>
+  </div>
 </Layout>
 
 <style>
   article :global(h2) {
-    @apply text-2xl border-l-4 border-current pl-2 my-4;
+    @apply text-2xl border-y-2 border-current pl-2 my-4 -mx-2 font-bold leading-relaxed;
   }
   article :global(h3) {
     @apply text-xl my-3;
@@ -86,10 +111,10 @@ const render = await post.render();
     @apply list-decimal;
   }
   article :global(blockquote) {
-    @apply pl-2 border-l border-current;
+    @apply pl-2 border-l-2 border-current;
   }
   article :global(pre) {
-    @apply px-4 py-2 rounded-md;
+    @apply px-4 py-2;
   }
 
   article :global(em) {

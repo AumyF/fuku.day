@@ -1,6 +1,6 @@
 import rss from "@astrojs/rss";
 import { type APIContext } from "astro";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { loadRenderers } from "astro:container";
 import { getContainerRenderer } from "@astrojs/mdx";
@@ -31,9 +31,9 @@ export async function GET(context: APIContext) {
       blog.map(async (post) => ({
         title: post.data.title,
         description: post.data.description,
-        link: `/blog/${post.slug}`,
-        pubDate: pubDate(post.slug),
-        content: await container.renderToString((await post.render()).Content),
+        link: `/blog/${post.id}`,
+        pubDate: pubDate(post.id),
+        content: await container.renderToString((await render(post)).Content),
       }))
     ),
   });

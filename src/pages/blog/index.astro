@@ -3,6 +3,9 @@ import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 
 const posts = await getCollection("blog");
+
+const collator = new Intl.Collator("en");
+posts.sort((a, b) => collator.compare(a.id, b.id));
 posts.reverse();
 ---
 
@@ -16,12 +19,13 @@ posts.reverse();
             <div class="block text-2xl mb-2 font-bold">
               <a
                 class="no-underline border-2 transition-colors border-black hover:bg-black hover:text-white"
-                href={`/blog/${post.slug}`}
+                href={`/blog/${post.id}`}
               >
                 {post.data.title}
               </a>
             </div>
 
+            <div>{post.id}</div>
             <div>{post.data.description}</div>
           </article>
         );

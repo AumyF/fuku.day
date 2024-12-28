@@ -1,16 +1,18 @@
 ---
 import type { GetStaticPaths } from "astro";
-import { getEntryBySlug } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import { render } from "astro:content";
 
 export const getStaticPaths = (async () => {
   const blog = await getCollection("blog");
-  return blog.map((entry) => ({ params: { slug: entry.slug } }));
+  return blog.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
 }) satisfies GetStaticPaths;
 
-const post = await getEntryBySlug("blog", Astro.params.slug);
-const render = await post.render();
+const post = Astro.props.entry;
+
+// const post = await getEntry("blog", Astro.params.id);
+const rendered = await render(post);
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
@@ -20,7 +22,7 @@ const render = await post.render();
       class="space-y-1 max-h-[50svh] p-2 overflow-scroll bg-neutral-400/90 backdrop-blur border-2 border-black"
     >
       {
-        render.headings.map((heading) => {
+        rendered.headings.map((heading) => {
           return (
             <li>
               {(() => {
@@ -80,7 +82,7 @@ const render = await post.render();
       <h1 class="text-3xl mb-6 leading-normal font-bold">
         {post.data.title}
       </h1>
-      <render.Content />
+      <rendered.Content />
     </article>
   </div>
 </Layout>
@@ -122,5 +124,16 @@ const render = await post.render();
     font-style: normal;
     margin-top: -1em;
     display: inline-block;
+  }
+
+  article :global(figure) {
+    @apply my-4;
+  }
+  article :global(img + figcaption) {
+    line-height: 1.5;
+    font-size: 0.9em;
+    text-align: center;
+    text-wrap: balance;
+    word-break: auto-phrase;
   }
 </style>

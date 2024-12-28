@@ -71,13 +71,19 @@ const topics = await Promise.all([
           </div>
         </section>
         {
-          topics.map((topic) => (
-            <Topic
-              title={topic.data.title}
-              description={topic.data.description}
-              href={`/blog/${topic.slug}`}
-            />
-          ))
+          topics.map((topic, index) => {
+            if (topic === undefined) {
+              throw new TypeError(`topic #${index} is undefined`);
+            }
+
+            return (
+              <Topic
+                title={topic.data.title}
+                description={topic.data.description}
+                href={`/blog/${topic.id}`}
+              />
+            );
+          })
         }
       </main>
     </div>

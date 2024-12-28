@@ -79,57 +79,75 @@ const rendered = await render(post);
     class="grow px-2 [overflow-wrap:anywhere] max-w-[min(theme(maxWidth.3xl),100%)] border-x-2 border-black"
   >
     <article>
-      <h1 class="text-3xl mb-6 leading-normal font-bold">
+      <div>
+        <p class="text-center mt-6">
+          <code>@aumy_f, {post.id}:</code>
+        </p>
+        <p class="text-center font-mono w-10/12 mx-auto text-balance">
+          {post.data.description}
+        </p>
+        <hr class="border-black border-t-2 block w-11/12 mx-auto mt-12" />
+      </div>
+
+      <h1
+        class="text-3xl leading-normal font-bold text-right mt-6 pr-2 mb-4 [font-feature-settings:'palt'] text-pretty [word-break:auto-phrase]"
+      >
         {post.data.title}
       </h1>
-      <rendered.Content />
+
+      <div id="content">
+        <rendered.Content />
+      </div>
     </article>
   </div>
 </Layout>
 
 <style>
-  article :global(h2) {
+  #content :global(h2) {
+    font-feature-settings: "palt";
     @apply text-2xl border-y-2 border-current pl-2 my-4 -mx-2 font-bold leading-relaxed;
   }
-  article :global(h3) {
+  #content :global(h3) {
+    font-feature-settings: "palt";
     @apply text-xl my-3;
   }
-  article :global(h4) {
+  #content :global(h4) {
+    font-feature-settings: "palt";
     @apply text-lg my-3;
   }
-  article :global(p + p) {
+  #content :global(p + p) {
     @apply mt-3;
   }
-  article :global(hr) {
+  #content :global(hr) {
     @apply my-2 border-t border-current;
   }
-  article :global(ul, ol) {
+  #content :global(ul, ol) {
     @apply pl-6;
   }
-  article :global(ul) {
+  #content :global(ul) {
     @apply list-disc;
   }
-  article :global(ol) {
+  #content :global(ol) {
     @apply list-decimal;
   }
-  article :global(blockquote) {
+  #content :global(blockquote) {
     @apply pl-2 border-l-2 border-current;
   }
-  article :global(pre) {
+  #content :global(pre) {
     @apply px-4 py-2 my-3;
   }
 
-  article :global(em) {
+  #content :global(em) {
     text-emphasis: dot;
     font-style: normal;
     margin-top: -1em;
     display: inline-block;
   }
 
-  article :global(figure) {
+  #content :global(figure) {
     @apply my-4;
   }
-  article :global(img + figcaption) {
+  #content :global(img + figcaption) {
     line-height: 1.5;
     font-size: 0.9em;
     text-align: center;

@@ -12,7 +12,7 @@ const { title } = Astro.props;
 
 <!doctype html>
 <html
-  class="leading-loose [container-type:inline-size] [container-name:document] bg-neutral-400 text-black [scrollbar-color:black_white] [scrollbar-gutter:stable]"
+  class="leading-loose [container-type:inline-size] [container-name:document] bg-neutral-200 text-black [scrollbar-color:black_white] [scrollbar-gutter:stable]"
   lang="ja"
 >
   <head>
@@ -32,7 +32,7 @@ const { title } = Astro.props;
   </head>
   <body class="">
     <div
-      class="vstack min-h-screen max-w-6xl gap-4 selection:bg-black selection:text-white [--margin:clamp(_0.5rem,_max((100cqi_-_48rem)_/_2,_5cqi),_7.5cqi_)] mx-[var(--margin)]"
+      class="vstack min-h-screen max-w-6xl gap-4 selection:bg-[#00f] selection:text-white [--margin:clamp(_0.5rem,_max((100cqi_-_48rem)_/_2,_5cqi),_7.5cqi_)] mx-[var(--margin)]"
     >
       <Header />
       <slot />
@@ -59,7 +59,7 @@ const { title } = Astro.props;
   }
 
   a {
-    @apply border-2 px-0.5 border-black hover:bg-black hover:text-white transition-colors;
+    @apply underline decoration-[0.125em] hover:decoration-[0.166em] decoration-[#00f] underline-offset-4;
   }
 
   img {

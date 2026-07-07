@@ -8,14 +8,21 @@ const videoid = src?.match(/https:\/\/youtu\.be\/([a-zA-Z0-9\-_]+)\??.*/)?.[1];
 if (src && !videoid) {
   throw new Error("failed to parse videoid");
 }
+
+const contextId = `video-context-${Math.random().toString(36).substr(2, 9)}`;
 ---
 
-<div class="yt-container">
+<div class="yt-container" data-video-context={contextId}>
   <div class="wrapper">
     <slot />
     {
       videoid && (
-        <lite-youtube videoid={videoid} autoload posterquality="default" />
+        <lite-youtube
+          videoid={videoid}
+          autoload
+          posterquality="default"
+          params="enablejsapi=1"
+        />
       )
     }
   </div>
@@ -25,7 +32,26 @@ if (src && !videoid) {
   </div>
 </div>
 
-<script src="@justinribeiro/lite-youtube/lite-youtube.js"></script>
+<script>
+  // クライアントサイドでのみlite-youtubeをimport
+  import('@justinribeiro/lite-youtube/lite-youtube.js').then(() => {
+    // 全てのlite-youtube要素にイベントリスナーを追加
+    document.querySelectorAll('lite-youtube').forEach((liteYoutube) => {
+      liteYoutube.addEventListener('liteYoutubeIframeLoaded', ((e: CustomEvent) => {
+        const target = e.target as HTMLElement;
+        if (!target.shadowRoot) return;
+
+        const iframe = target.shadowRoot.querySelector('iframe');
+        if (!iframe) return;
+
+        // lite-youtube要素にiframe参照を保存
+        (liteYoutube as any).__iframe = iframe;
+
+        console.log('YouTube iframe loaded and stored');
+      }) as EventListener);
+    });
+  });
+</script>
 
 <style>
   .yt-container {

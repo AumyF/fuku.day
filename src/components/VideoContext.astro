@@ -1,0 +1,8 @@
+---
+// ユニークなIDを生成
+const contextId = `video-context-${Math.random().toString(36).substr(2, 9)}`;
+---
+
+<div data-video-context={contextId}>
+  <slot />
+</div>

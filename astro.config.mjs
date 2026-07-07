@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import browserslist from "browserslist";
 import { browserslistToTargets } from "lightningcss";
-import tailwindcss from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import svelte from "@astrojs/svelte";
 
 import mdx from "@astrojs/mdx";
@@ -9,7 +9,8 @@ import mdx from "@astrojs/mdx";
 // https://astro.build/config
 export default defineConfig({
   site: "https://fuku.day",
-  integrations: [tailwindcss(), svelte(), mdx()],
+  compressHTML: true,
+  integrations: [svelte(), mdx()],
   markdown: {
     shikiConfig: {
       themes: {
@@ -19,6 +20,7 @@ export default defineConfig({
     },
   },
   vite: {
+    plugins: [tailwindcss()],
     css: {
       lightningcss: {
         targets: browserslistToTargets(browserslist("defaults")),

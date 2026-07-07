@@ -54,6 +54,13 @@ const contextId = `video-context-${Math.random().toString(36).substr(2, 9)}`;
 </script>
 
 <style>
+  /* Tailwind v4 preflight resets `padding` on `*`, and that light-DOM rule
+     beats lite-youtube's own shadow-DOM `:host` padding-bottom (its aspect-ratio
+     hack), collapsing the player to 0 height. Restore it here. */
+  lite-youtube {
+    padding-bottom: calc(100% / (16 / 9));
+  }
+
   .yt-container {
     margin-inline: auto;
     max-width: 560px;

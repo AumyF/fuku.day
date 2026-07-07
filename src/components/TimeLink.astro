@@ -15,10 +15,12 @@ const { time } = Astro.props;
 
     if (parts.length === 2) {
       // mm:ss
-      return parts[0] * 60 + parts[1];
+      const [mm, ss] = parts;
+      return (mm ?? 0) * 60 + (ss ?? 0);
     } else if (parts.length === 3) {
       // hh:mm:ss
-      return parts[0] * 3600 + parts[1] * 60 + parts[2];
+      const [hh, mm, ss] = parts;
+      return (hh ?? 0) * 3600 + (mm ?? 0) * 60 + (ss ?? 0);
     }
 
     return 0;

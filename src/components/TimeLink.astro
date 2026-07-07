@@ -1,0 +1,87 @@
+---
+type Props = { time: string };
+const { time } = Astro.props;
+---
+
+<button
+  class="time-link cursor-pointer underline decoration-[0.125em] underline-offset-4 decoration-[#00f] hover:decoration-[0.166em] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+  data-time={time}
+><slot>{time}</slot></button><script>
+  /**
+   * 時間文字列を秒数に変換
+   */
+  function timeToSeconds(time: string): number {
+    const parts = time.split(':').map(Number);
+
+    if (parts.length === 2) {
+      // mm:ss
+      return parts[0] * 60 + parts[1];
+    } else if (parts.length === 3) {
+      // hh:mm:ss
+      return parts[0] * 3600 + parts[1] * 60 + parts[2];
+    }
+
+    return 0;
+  }
+
+  // イベント委譲で全てのTimeLinkのクリックを処理
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const button = target.closest('.time-link') as HTMLButtonElement;
+    if (!button) return;
+
+    const time = button.dataset.time;
+    if (!time) return;
+
+    // 最も近い data-video-context を持つ親要素を探す
+    const context = button.closest('[data-video-context]');
+    if (!context) {
+      console.warn('VideoContext not found. Make sure TimeLink is inside VideoContext.');
+      return;
+    }
+
+    // その中の lite-youtube 要素を探す
+    const liteYoutube = context.querySelector('lite-youtube') as any;
+    if (!liteYoutube) {
+      console.warn('lite-youtube element not found in VideoContext');
+      return;
+    }
+
+    const seconds = timeToSeconds(time);
+
+    // すでにiframeがロードされている場合
+    if (liteYoutube.__iframe) {
+      const iframe = liteYoutube.__iframe;
+
+      // YouTube IFrame API の postMessage を使って seekTo を実行
+      iframe.contentWindow?.postMessage(
+        JSON.stringify({
+          event: 'command',
+          func: 'seekTo',
+          args: [seconds, true]
+        }),
+        '*'
+      );
+
+      // 動画を再生状態にする
+      iframe.contentWindow?.postMessage(
+        JSON.stringify({
+          event: 'command',
+          func: 'playVideo',
+          args: []
+        }),
+        '*'
+      );
+
+      console.log(`Seeked to ${time} (${seconds}s)`);
+    } else {
+      // まだロードされていない場合は、videoStartAt を設定してから addIframe を呼ぶ
+      liteYoutube.setAttribute('videoStartAt', seconds.toString());
+
+      // lite-youtubeのクリックをトリガー
+      liteYoutube.click();
+
+      console.log(`Starting video at ${time} (${seconds}s)`);
+    }
+  });
+</script>

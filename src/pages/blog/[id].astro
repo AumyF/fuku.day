@@ -115,14 +115,11 @@ const rendered = await render(post);
     #content :global(hr) {
       @apply my-2 border-t border-current;
     }
-    #content :global(ul, ol) {
-      @apply pl-6;
-    }
     #content :global(ul) {
-      @apply list-disc;
+      @apply pl-6 list-disc;
     }
     #content :global(ol) {
-      @apply list-decimal;
+      @apply pl-6 list-decimal;
     }
     #content :global(blockquote) {
       @apply pl-2 border-l-2 border-current;

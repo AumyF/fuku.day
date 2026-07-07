@@ -43,6 +43,11 @@ const { title } = Astro.props;
 <style is:global>
   @import "tailwindcss";
 
+  /* remark-gfm injects class="sr-only" into rendered markdown (e.g. the
+     footnotes heading) at build time, so Tailwind's content scan never sees
+     the literal string and never generates the utility. Force it. */
+  @source inline("sr-only");
+
   @layer components {
     .vstack {
       @apply flex flex-col;

@@ -3,7 +3,7 @@ import { type APIContext } from "astro";
 import { getCollection, render } from "astro:content";
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { loadRenderers } from "astro:container";
-import { getContainerRenderer } from "@astrojs/mdx";
+import { getContainerRenderer } from "@astrojs/mdx/container-renderer";
 
 function pubDate(slug: string) {
   const [yyyy, mm, dd] = slug.split("-");

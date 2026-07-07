@@ -61,7 +61,7 @@ const rendered = await render(post);
     <button
       popovertarget="toc"
       type="button"
-      class="px-4 bg-neutral-200/90 backdrop-blur border-2 border-black after:[content:var(--content)]"
+      class="px-4 bg-neutral-200/90 backdrop-blur border-2 border-black after:[content:var(--content)] cursor-pointer"
       >目次
     </button>
   </div>
@@ -95,6 +95,8 @@ const rendered = await render(post);
   </div>
 
   <style>
+    @reference "tailwindcss";
+
     #content :global(h2) {
       font-feature-settings: "palt";
       @apply text-2xl border-y-2 border-current pl-2 my-4 -mx-2 font-bold leading-relaxed decoration-[oklch(0.72_0.1_0)];

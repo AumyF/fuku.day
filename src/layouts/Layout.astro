@@ -41,9 +41,7 @@ const { title } = Astro.props;
   </body>
 </html>
 <style is:global>
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+  @import "tailwindcss";
 
   @layer components {
     .vstack {
@@ -54,17 +52,19 @@ const { title } = Astro.props;
     }
   }
 
-  :root {
-    font-family: sans-serif;
-  }
+  @layer base {
+    :root {
+      font-family: sans-serif;
+    }
 
-  a {
-    @apply underline decoration-[0.125em] hover:decoration-[0.166em] decoration-[#00f] underline-offset-4;
-  }
+    a {
+      @apply underline decoration-[0.125em] hover:decoration-[0.166em] decoration-[#00f] underline-offset-4;
+    }
 
-  img {
-    display: block;
-    width: 100%;
+    img {
+      display: block;
+      width: 100%;
+    }
   }
 
   @media (prefers-color-scheme: dark) {

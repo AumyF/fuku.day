@@ -15,15 +15,24 @@
     "@astrojs/mdx": "^7.0.2",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/svelte": "^9.0.1",
+    "@fontsource/noto-sans-jp": "^5.2.9",
+    "@fontsource/noto-serif-jp": "^5.2.8",
     "@justinribeiro/lite-youtube": "^1.5.0",
+    "@resvg/resvg-wasm": "^2.6.2",
     "@tailwindcss/vite": "^4.3.2",
     "astro": "^7.0.6",
     "browserslist": "^4.23.0",
+    "remark-mdx": "^3.1.1",
+    "remark-parse": "^11.0.0",
+    "satori": "^0.26.0",
     "svelte": "^5.56.4",
     "tailwindcss": "^4.3.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
+    "@types/node": "^26.1.1",
     "lightningcss": "^1.22.1"
   }
 }

@@ -13,9 +13,14 @@ const post = Astro.props.entry;
 
 // const post = await getEntry("blog", Astro.params.id);
 const rendered = await render(post);
+const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  image={imageUrl}
+>
   <div id="toc" popover class="peer z-50 bg-transparent p-2">
     <!-- TODO: iOSとかで出たり入ったりするナビゲーションでsvhが動いちゃうんだけどこれってsafe-area-insetでいいんだっけ？ -->
     <ul

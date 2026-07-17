@@ -27,37 +27,60 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
       class="space-y-1 max-h-[50svh] p-2 overflow-scroll bg-neutral-200/90 backdrop-blur border-2 border-black"
     >
       {
-        rendered.headings.map((heading) => {
-          return (
-            <li>
-              {(() => {
-                switch (heading.depth) {
-                  case 2:
-                    return (
-                      <a class={`block pl-2`} href={`#${heading.slug}`}>
-                        {heading.text}
-                      </a>
-                    );
-                  case 3:
-                    return (
-                      <a class={`block pl-4`} href={`#${heading.slug}`}>
-                        {heading.text}
-                      </a>
-                    );
-                  case 4:
-                    return (
-                      <a class={`block pl-6`} href={`#${heading.slug}`}>
-                        {heading.text}
-                      </a>
-                    );
-                }
-              })()}
-            </li>
-          );
-        })
+        rendered.headings
+          .filter((heading) => heading.slug !== "footnote-label")
+          .map((heading) => {
+            return (
+              <li>
+                {(() => {
+                  switch (heading.depth) {
+                    case 2:
+                      return (
+                        <a class={`block pl-2`} href={`#${heading.slug}`}>
+                          {heading.text}
+                        </a>
+                      );
+                    case 3:
+                      return (
+                        <a class={`block pl-4`} href={`#${heading.slug}`}>
+                          {heading.text}
+                        </a>
+                      );
+                    case 4:
+                      return (
+                        <a class={`block pl-6`} href={`#${heading.slug}`}>
+                          {heading.text}
+                        </a>
+                      );
+                  }
+                })()}
+              </li>
+            );
+          })
       }
     </ul>
   </div>
+
+  <aside
+    id="footnote-sheet"
+    popover="auto"
+    role="dialog"
+    aria-modal="false"
+    aria-labelledby="footnote-sheet-title"
+  >
+    <header>
+      <h2 id="footnote-sheet-title" tabindex="-1">脚注</h2>
+      <button
+        type="button"
+        popovertarget="footnote-sheet"
+        popovertargetaction="hide"
+        aria-label="脚注を閉じる"
+      >
+        閉じる
+      </button>
+    </header>
+    <div data-footnote-sheet-content></div>
+  </aside>
 
   <!-- 兄弟要素 -->
   <div
@@ -95,9 +118,23 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
 
       <div id="content">
         <rendered.Content />
+        <svg data-sidenote-connectors aria-hidden="true"></svg>
       </div>
     </article>
   </div>
+
+  <noscript>
+    <style>
+      #content .footnotes {
+        display: block !important;
+      }
+      #content .sidenotes,
+      #content [data-sidenote-connectors],
+      #footnote-sheet {
+        display: none !important;
+      }
+    </style>
+  </noscript>
 
   <style>
     @reference "tailwindcss";
@@ -150,5 +187,372 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
       text-wrap: balance;
       word-break: auto-phrase;
     }
+
+    #content {
+      --footnote-layout: narrow;
+      position: relative;
+    }
+
+    #content :global(.footnotes) {
+      display: none;
+    }
+
+    #content :global(.sidenotes),
+    #content [data-sidenote-connectors] {
+      display: none;
+    }
+
+    #footnote-sheet {
+      inset: 0 0 auto;
+      width: min(100%, 48rem);
+      max-height: min(45svh, 24rem);
+      margin: 0 auto;
+      padding: 0;
+      overflow: auto;
+      background: rgb(229 229 229 / 0.96);
+      border: 0;
+      border-bottom: 2px solid black;
+      color: black;
+      backdrop-filter: blur(0.75rem);
+    }
+
+    #footnote-sheet::backdrop {
+      background: transparent;
+    }
+
+    #footnote-sheet header {
+      position: sticky;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.5rem 0.75rem;
+      background: rgb(229 229 229 / 0.96);
+      border-bottom: 1px solid black;
+    }
+
+    #footnote-sheet h2 {
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+
+    #footnote-sheet button {
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: #00f;
+      text-decoration-thickness: 0.125em;
+      text-underline-offset: 0.25rem;
+    }
+
+    #footnote-sheet [data-footnote-sheet-content] {
+      padding: 0.75rem;
+    }
+
+    #footnote-sheet :global(p + p) {
+      margin-top: 0.75rem;
+    }
+
+    @container document (min-width: 72rem) {
+      #content {
+        --footnote-layout: wide;
+      }
+
+      #content :global(.sidenotes) {
+        position: absolute;
+        inset: 0 auto auto 100%;
+        display: block;
+        width: 0;
+        height: 100%;
+      }
+
+      #content :global(.sidenote) {
+        position: absolute;
+        left: clamp(1rem, 2cqi, 2rem);
+        width: var(--sidenote-rail-width, 10rem);
+        min-width: 10rem;
+        visibility: hidden;
+        font-size: 0.875rem;
+        line-height: 1.55;
+      }
+
+      #content[data-footnotes-ready] :global(.sidenote) {
+        visibility: visible;
+      }
+
+      #content :global(.sidenote-number) {
+        float: left;
+        min-width: 1.5rem;
+        margin-right: 0.25rem;
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+      }
+
+      #content :global(.sidenote-body p + p) {
+        margin-top: 0.5rem;
+      }
+
+      #content [data-sidenote-connectors] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        display: block;
+        max-width: none;
+        overflow: visible;
+        pointer-events: none;
+      }
+
+      #content [data-sidenote-connectors] :global(path) {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1px;
+        opacity: 0.07;
+        vector-effect: non-scaling-stroke;
+        transition: opacity 120ms ease;
+      }
+
+      #content [data-sidenote-connectors] :global(path.is-active) {
+        opacity: 0.55;
+      }
+    }
+
+    @media print {
+      #content :global(.footnotes) {
+        display: block;
+      }
+
+      #content :global(.sidenotes),
+      #content [data-sidenote-connectors],
+      #footnote-sheet {
+        display: none !important;
+      }
+    }
   </style>
+
+  <script>
+    const content = document.querySelector<HTMLElement>("#content");
+    const sheet = document.querySelector<HTMLElement>("#footnote-sheet");
+
+    if (content && sheet) {
+      const references = Array.from(
+        content.querySelectorAll<HTMLAnchorElement>("[data-footnote-ref]"),
+      );
+      const sidenotes = Array.from(
+        content.querySelectorAll<HTMLElement>("[data-sidenote]"),
+      );
+      const connectors = content.querySelector<SVGSVGElement>(
+        "[data-sidenote-connectors]",
+      );
+      const sheetTitle =
+        sheet.querySelector<HTMLElement>("#footnote-sheet-title");
+      const sheetContent = sheet.querySelector<HTMLElement>(
+        "[data-footnote-sheet-content]",
+      );
+      const sheetClose = sheet.querySelector<HTMLButtonElement>(
+        "[popovertargetaction='hide']",
+      );
+
+      const footnoteId = (element: Element | null) =>
+        element instanceof HTMLElement
+          ? element.dataset.footnoteId
+          : undefined;
+
+      const isWide = () =>
+        getComputedStyle(content)
+          .getPropertyValue("--footnote-layout")
+          .trim() === "wide";
+
+      const referenceFor = (id: string) =>
+        references.find((reference) => reference.dataset.footnoteId === id);
+
+      const sidenoteFor = (id: string) =>
+        sidenotes.find((sidenote) => sidenote.dataset.footnoteId === id);
+
+      const syncActive = (id: string) => {
+        const related = [
+          ...references.filter(
+            (reference) => reference.dataset.footnoteId === id,
+          ),
+          ...sidenotes.filter(
+            (sidenote) => sidenote.dataset.footnoteId === id,
+          ),
+        ];
+        const active = related.some(
+          (element) =>
+            element.matches(":hover") || element.matches(":focus-within"),
+        );
+
+        connectors
+          ?.querySelectorAll<SVGPathElement>("path")
+          .forEach((path) => {
+            if (path.dataset.footnoteId === id) {
+              path.classList.toggle("is-active", active);
+            }
+          });
+      };
+
+      let layoutFrame = 0;
+      const layoutSidenotes = () => {
+        layoutFrame = 0;
+
+        if (!connectors) return;
+
+        if (!isWide()) {
+          content.removeAttribute("data-footnotes-ready");
+          content.style.removeProperty("padding-bottom");
+          connectors.replaceChildren();
+          return;
+        }
+
+        if (sheet.matches(":popover-open")) sheet.hidePopover();
+
+        const contentRect = content.getBoundingClientRect();
+        const pageFrame = content.closest<HTMLElement>(".vstack");
+        const frameRight =
+          pageFrame?.getBoundingClientRect().right ?? contentRect.right;
+        const sidenoteGap =
+          Number.parseFloat(getComputedStyle(sidenotes[0]!).left) || 16;
+        const railWidth = Math.max(
+          160,
+          frameRight - contentRect.right - sidenoteGap,
+        );
+        content.style.setProperty("--sidenote-rail-width", `${railWidth}px`);
+        const currentPadding =
+          Number.parseFloat(content.style.paddingBottom) || 0;
+        const naturalHeight = content.scrollHeight - currentPadding;
+        let previousBottom = -12;
+        let widestPoint = contentRect.width;
+        const paths: SVGPathElement[] = [];
+
+        for (const sidenote of sidenotes) {
+          const id = sidenote.dataset.footnoteId;
+          if (!id) continue;
+          const reference = referenceFor(id);
+          if (!reference) continue;
+
+          const referenceRect = reference.getBoundingClientRect();
+          const desiredTop = referenceRect.top - contentRect.top;
+          const top = Math.max(desiredTop, previousBottom + 12);
+          sidenote.style.top = `${top}px`;
+
+          const sidenoteRect = sidenote.getBoundingClientRect();
+          previousBottom = top + sidenoteRect.height;
+          widestPoint = Math.max(
+            widestPoint,
+            sidenoteRect.right - contentRect.left,
+          );
+
+          const startX = referenceRect.right - contentRect.left + 3;
+          const startY =
+            referenceRect.top - contentRect.top + referenceRect.height / 2;
+          const endX = sidenoteRect.left - contentRect.left - 6;
+          const endY =
+            sidenoteRect.top -
+            contentRect.top +
+            Math.min(18, sidenoteRect.height / 2);
+          const middleX = startX + (endX - startX) * 0.58;
+          const path = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path",
+          );
+          path.dataset.footnoteId = id;
+          path.setAttribute(
+            "d",
+            `M ${startX} ${startY} C ${middleX} ${startY}, ${middleX} ${endY}, ${endX} ${endY}`,
+          );
+          paths.push(path);
+        }
+
+        const overflow = Math.max(0, previousBottom - naturalHeight);
+        content.style.paddingBottom = overflow ? `${overflow}px` : "";
+        const height = naturalHeight + overflow;
+        connectors.setAttribute("width", `${widestPoint}`);
+        connectors.setAttribute("height", `${height}`);
+        connectors.style.width = `${widestPoint}px`;
+        connectors.style.height = `${height}px`;
+        connectors.replaceChildren(...paths);
+        content.setAttribute("data-footnotes-ready", "");
+      };
+
+      const scheduleLayout = () => {
+        if (layoutFrame) cancelAnimationFrame(layoutFrame);
+        layoutFrame = requestAnimationFrame(layoutSidenotes);
+      };
+
+      content.addEventListener("pointerover", (event) => {
+        const id = footnoteId(
+          (event.target as Element).closest("[data-footnote-id]"),
+        );
+        if (id) requestAnimationFrame(() => syncActive(id));
+      });
+      content.addEventListener("pointerout", (event) => {
+        const id = footnoteId(
+          (event.target as Element).closest("[data-footnote-id]"),
+        );
+        if (id) requestAnimationFrame(() => syncActive(id));
+      });
+      content.addEventListener("focusin", (event) => {
+        const id = footnoteId(
+          (event.target as Element).closest("[data-footnote-id]"),
+        );
+        if (id) requestAnimationFrame(() => syncActive(id));
+      });
+      content.addEventListener("focusout", (event) => {
+        const id = footnoteId(
+          (event.target as Element).closest("[data-footnote-id]"),
+        );
+        if (id) requestAnimationFrame(() => syncActive(id));
+      });
+
+      content.addEventListener("click", (event) => {
+        const reference = (event.target as Element).closest<HTMLAnchorElement>(
+          "[data-footnote-ref]",
+        );
+        const id = reference?.dataset.footnoteId;
+        if (!reference || !id) return;
+        event.preventDefault();
+
+        if (isWide()) {
+          reference.focus({ preventScroll: true });
+          syncActive(id);
+          return;
+        }
+
+        const sidenote = sidenoteFor(id);
+        const body = sidenote?.querySelector<HTMLElement>(".sidenote-body");
+        if (!body || !sheetContent || !sheetTitle) return;
+
+        sheetTitle.textContent = sidenote?.getAttribute("aria-label") ?? "脚注";
+        sheetContent.replaceChildren(...Array.from(body.childNodes, (node) =>
+          node.cloneNode(true),
+        ));
+        sheet.dataset.returnFocus = reference.id;
+        if (!sheet.matches(":popover-open")) sheet.showPopover();
+        requestAnimationFrame(() =>
+          sheetClose?.focus({ preventScroll: true }),
+        );
+      });
+
+      sheet.addEventListener("toggle", (event) => {
+        if ((event as ToggleEvent).newState !== "closed") return;
+        const returnFocus = sheet.dataset.returnFocus;
+        delete sheet.dataset.returnFocus;
+        if (returnFocus) {
+          document
+            .getElementById(returnFocus)
+            ?.focus({ preventScroll: true });
+        }
+      });
+
+      if (references.length && sidenotes.length) {
+        const resizeObserver = new ResizeObserver(scheduleLayout);
+        resizeObserver.observe(document.documentElement);
+        resizeObserver.observe(content);
+        sidenotes.forEach((sidenote) => resizeObserver.observe(sidenote));
+        document.fonts.ready.then(scheduleLayout);
+        scheduleLayout();
+      }
+    }
+  </script>
 </Layout>

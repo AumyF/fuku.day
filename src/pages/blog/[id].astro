@@ -21,10 +21,10 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
   description={post.data.description}
   image={imageUrl}
 >
-  <div id="toc" popover class="peer z-50 bg-transparent p-2">
+  <div id="toc" popover class="peer z-50 m-auto bg-transparent p-2">
     <!-- TODO: iOSとかで出たり入ったりするナビゲーションでsvhが動いちゃうんだけどこれってsafe-area-insetでいいんだっけ？ -->
     <ul
-      class="space-y-1 max-h-[50svh] p-2 overflow-scroll bg-neutral-200/90 backdrop-blur border-2 border-black"
+      class="space-y-1 max-h-[50svh] p-2 overflow-scroll bg-[#fef1e2]/90 backdrop-blur border-2 border-[#06275e]"
     >
       {
         rendered.headings
@@ -66,10 +66,13 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
     popover="auto"
     role="dialog"
     aria-modal="false"
-    aria-labelledby="footnote-sheet-title"
+    aria-label="脚注"
   >
+    <div data-footnote-sheet-content>
+      <span data-footnote-sheet-number aria-hidden="true"></span>
+      <div data-footnote-sheet-body></div>
+    </div>
     <header>
-      <h2 id="footnote-sheet-title" tabindex="-1">脚注</h2>
       <button
         type="button"
         popovertarget="footnote-sheet"
@@ -79,7 +82,6 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
         閉じる
       </button>
     </header>
-    <div data-footnote-sheet-content></div>
   </aside>
 
   <!-- 兄弟要素 -->
@@ -89,13 +91,13 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
     <button
       popovertarget="toc"
       type="button"
-      class="px-4 bg-neutral-200/90 backdrop-blur border-2 border-black after:[content:var(--content)] cursor-pointer"
+      class="px-4 bg-[#fef1e2]/90 backdrop-blur border-2 border-[#06275e] after:[content:var(--content)] cursor-pointer"
       >目次
     </button>
   </div>
 
   <div
-    class="grow px-2 [overflow-wrap:anywhere] max-w-[min(theme(maxWidth.3xl),100%)] border-x-2 border-black backdrop-blur-3xl"
+    class="grow px-2 [overflow-wrap:anywhere] max-w-[min(theme(maxWidth.3xl),100%)] border-x-2 border-[#06275e] [font-size:clamp(0.875rem,_0.792rem_+_0.42cqi,_1rem)]"
   >
     <article>
       <div>
@@ -107,7 +109,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
         >
           {post.data.description}
         </p>
-        <hr class="border-black border-t-2 block w-11/12 mx-auto mt-12" />
+        <hr class="border-[#06275e] border-t-2 block w-11/12 mx-auto mt-12" />
       </div>
 
       <h1
@@ -118,7 +120,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
 
       <div id="content">
         <rendered.Content />
-        <svg data-sidenote-connectors aria-hidden="true"></svg>
+        <svg data-sidenote-connectors aria-hidden="true" ></svg>
       </div>
     </article>
   </div>
@@ -141,7 +143,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
 
     #content :global(h2) {
       font-feature-settings: "palt";
-      @apply text-2xl border-y-2 border-current pl-2 my-4 -mx-2 font-bold leading-relaxed decoration-[oklch(0.72_0.1_0)];
+      @apply text-2xl border-y-2 border-[#06275e] pl-2 my-4 -mx-2 font-bold leading-relaxed decoration-[oklch(0.72_0.1_0)];
     }
     #content :global(h3) {
       font-feature-settings: "palt";
@@ -155,7 +157,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
       @apply mt-3;
     }
     #content :global(hr) {
-      @apply my-2 border-t border-current;
+      @apply my-2 border-t border-[#06275e];
     }
     #content :global(ul) {
       @apply pl-6 list-disc;
@@ -164,7 +166,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
       @apply pl-6 list-decimal;
     }
     #content :global(blockquote) {
-      @apply pl-2 border-l-2 border-current;
+      @apply pl-2 border-l-2 border-[#06275e];
     }
     #content :global(pre) {
       @apply px-4 py-2 my-3;
@@ -209,9 +211,9 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
       margin: 0 auto;
       padding: 0;
       overflow: auto;
-      background: rgb(229 229 229 / 0.96);
+      background: rgb(254 241 226 / 0.96);
       border: 0;
-      border-bottom: 2px solid black;
+      border-bottom: 2px solid #06275e;
       color: black;
       backdrop-filter: blur(0.75rem);
     }
@@ -222,18 +224,21 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
 
     #footnote-sheet header {
       position: sticky;
-      top: 0;
+      bottom: 0;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       gap: 1rem;
       padding: 0.5rem 0.75rem;
-      background: rgb(229 229 229 / 0.96);
-      border-bottom: 1px solid black;
+      background: rgb(254 241 226 / 0.96);
+      border-top: 1px solid #06275e;
     }
 
-    #footnote-sheet h2 {
-      font-size: 0.875rem;
+    #footnote-sheet [data-footnote-sheet-number] {
+      float: left;
+      min-width: 1.5rem;
+      margin-right: 0.25rem;
+      font-variant-numeric: tabular-nums;
       font-weight: 700;
     }
 
@@ -247,6 +252,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
 
     #footnote-sheet [data-footnote-sheet-content] {
       padding: 0.75rem;
+      overflow-wrap: anywhere;
     }
 
     #footnote-sheet :global(p + p) {
@@ -305,7 +311,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
 
       #content [data-sidenote-connectors] :global(path) {
         fill: none;
-        stroke: currentColor;
+        stroke: #ff3588;
         stroke-width: 1px;
         opacity: 0.07;
         vector-effect: non-scaling-stroke;
@@ -344,10 +350,14 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
       const connectors = content.querySelector<SVGSVGElement>(
         "[data-sidenote-connectors]",
       );
-      const sheetTitle =
-        sheet.querySelector<HTMLElement>("#footnote-sheet-title");
       const sheetContent = sheet.querySelector<HTMLElement>(
         "[data-footnote-sheet-content]",
+      );
+      const sheetNumber = sheet.querySelector<HTMLElement>(
+        "[data-footnote-sheet-number]",
+      );
+      const sheetBody = sheet.querySelector<HTMLElement>(
+        "[data-footnote-sheet-body]",
       );
       const sheetClose = sheet.querySelector<HTMLButtonElement>(
         "[popovertargetaction='hide']",
@@ -432,7 +442,12 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
           if (!reference) continue;
 
           const referenceRect = reference.getBoundingClientRect();
-          const desiredTop = referenceRect.top - contentRect.top;
+          const referenceLineHeight =
+            Number.parseFloat(getComputedStyle(reference).lineHeight) ||
+            referenceRect.height;
+          const upwardOffset = referenceLineHeight / 2;
+          const desiredTop =
+            referenceRect.top - contentRect.top - upwardOffset;
           const top = Math.max(desiredTop, previousBottom + 12);
           sidenote.style.top = `${top}px`;
 
@@ -444,14 +459,17 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
           );
 
           const startX = referenceRect.right - contentRect.left + 3;
-          const startY =
-            referenceRect.top - contentRect.top + referenceRect.height / 2;
+          const startY = referenceRect.top - contentRect.top + 2;
           const endX = sidenoteRect.left - contentRect.left - 6;
-          const endY =
-            sidenoteRect.top -
-            contentRect.top +
-            Math.min(18, sidenoteRect.height / 2);
-          const middleX = startX + (endX - startX) * 0.58;
+          const endY = sidenoteRect.top - contentRect.top + 2;
+          const lineWidth = endX - startX;
+          const lineRise = endY - startY;
+          const waveAmplitude = Math.min(12, referenceLineHeight / 3);
+          const firstControlX = startX + lineWidth / 3;
+          const secondControlX = startX + (lineWidth * 2) / 3;
+          const firstControlY = startY + lineRise / 3 + waveAmplitude;
+          const secondControlY =
+            startY + (lineRise * 2) / 3 - waveAmplitude;
           const path = document.createElementNS(
             "http://www.w3.org/2000/svg",
             "path",
@@ -459,7 +477,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
           path.dataset.footnoteId = id;
           path.setAttribute(
             "d",
-            `M ${startX} ${startY} C ${middleX} ${startY}, ${middleX} ${endY}, ${endX} ${endY}`,
+            `M ${startX} ${startY} C ${firstControlX} ${firstControlY}, ${secondControlX} ${secondControlY}, ${endX} ${endY}`,
           );
           paths.push(path);
         }
@@ -520,11 +538,17 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
         }
 
         const sidenote = sidenoteFor(id);
+        const number = sidenote?.querySelector<HTMLElement>(".sidenote-number");
         const body = sidenote?.querySelector<HTMLElement>(".sidenote-body");
-        if (!body || !sheetContent || !sheetTitle) return;
+        if (!number || !body || !sheetContent || !sheetNumber || !sheetBody)
+          return;
 
-        sheetTitle.textContent = sidenote?.getAttribute("aria-label") ?? "脚注";
-        sheetContent.replaceChildren(...Array.from(body.childNodes, (node) =>
+        sheet.setAttribute(
+          "aria-label",
+          sidenote?.getAttribute("aria-label") ?? "脚注",
+        );
+        sheetNumber.textContent = number.textContent;
+        sheetBody.replaceChildren(...Array.from(body.childNodes, (node) =>
           node.cloneNode(true),
         ));
         sheet.dataset.returnFocus = reference.id;

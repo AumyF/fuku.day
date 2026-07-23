@@ -30,7 +30,7 @@
   </p>
   <button
     onclick={roll}
-    class="px-2 border border-neutral-400 rounded-lg hover:bg-neutral-200/70 active:bg-neutral-200 cursor-pointer"
+    class="px-2 border border-[#06275e] rounded-lg hover:bg-neutral-200/70 active:bg-neutral-200 cursor-pointer"
     >roll</button
   >
 </div>

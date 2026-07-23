@@ -13,7 +13,7 @@ const { title, image } = Astro.props;
 
 <!doctype html>
 <html
-  class="leading-loose [container-type:inline-size] [container-name:document] bg-neutral-200 text-black [scrollbar-color:black_white] [scrollbar-gutter:stable]"
+  class="leading-loose [container-type:inline-size] [container-name:document] bg-[#fef1e2] text-[#06275e] [scrollbar-color:black_white] [scrollbar-gutter:stable]"
   lang="ja"
 >
   <head>
@@ -64,7 +64,7 @@ const { title, image } = Astro.props;
       @apply flex flex-col;
     }
     .card {
-      @apply border-l-2 border-black pl-4;
+      @apply border-l-2 border-[#06275e] pl-4;
     }
   }
 
@@ -74,7 +74,7 @@ const { title, image } = Astro.props;
     }
 
     a {
-      @apply underline decoration-[0.125em] hover:decoration-[0.166em] decoration-[#00f] underline-offset-4;
+      @apply underline decoration-[0.125em] hover:decoration-[0.166em] decoration-[#ff3588] underline-offset-4;
     }
 
     img {

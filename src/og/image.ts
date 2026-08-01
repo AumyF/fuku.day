@@ -36,7 +36,8 @@ async function ensureWasmInitialized() {
   return globalWithWasm[wasmReadyKey];
 }
 
-type FontWeight = 500 | 600;
+const weights = [500, 600] as const;
+type FontWeight = typeof weights[number];
 
 let fontDataPromise:
   | Promise<
@@ -47,7 +48,6 @@ let fontDataPromise:
 async function loadFonts() {
   if (!fontDataPromise) {
     const subsets = ["japanese", "latin"] as const;
-    const weights = [500, 600] as const;
     fontDataPromise = Promise.all(
       subsets.flatMap((subset) =>
         weights.map(async (weight) => {

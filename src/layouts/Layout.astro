@@ -6,9 +6,10 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  wide?: boolean;
 }
 
-const { title, image } = Astro.props;
+const { title, image, wide = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -43,11 +44,14 @@ const { title, image } = Astro.props;
   </head>
   <body class="">
     <div
-      class="vstack min-h-screen max-w-6xl gap-4 selection:bg-[#00f] selection:text-white [--margin:clamp(_0.5rem,_max((100cqi_-_48rem)_/_2,_2.5cqi),_7.5cqi_)] mx-[var(--margin)]"
+      class:list={[
+        "vstack min-h-screen gap-4 selection:bg-[#00f] selection:text-white [--margin:clamp(_0.5rem,_max((100cqi_-_48rem)_/_2,_2.5cqi),_7.5cqi_)] mx-[var(--margin)]",
+        !wide && "max-w-6xl",
+      ]}
     >
-      <Header />
+      <div class="max-w-6xl"><Header /></div>
       <slot />
-      <Footer />
+      <div class="max-w-6xl grow vstack"><Footer /></div>
     </div>
   </body>
 </html>

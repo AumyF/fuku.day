@@ -20,6 +20,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
   title={post.data.title}
   description={post.data.description}
   image={imageUrl}
+  wide
 >
   <div id="toc" popover class="peer z-50 m-auto bg-transparent p-2">
     <!-- TODO: iOSとかで出たり入ったりするナビゲーションでsvhが動いちゃうんだけどこれってsafe-area-insetでいいんだっけ？ -->
@@ -97,7 +98,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
   </div>
 
   <div
-    class="grow px-2 [overflow-wrap:anywhere] max-w-[min(theme(maxWidth.3xl),100%)] border-x-2 border-[#06275e] [font-size:clamp(0.875rem,_0.792rem_+_0.42cqi,_1rem)]"
+    class="article-column grow px-2 [overflow-wrap:anywhere] max-w-[min(theme(maxWidth.3xl),100%)] border-x-2 border-[#06275e] [font-size:clamp(0.875rem,_0.792rem_+_0.42cqi,_1rem)]"
   >
     <article>
       <div>
@@ -179,6 +180,12 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
       display: inline-block;
     }
 
+    .article-column {
+      --frame: calc(100cqi - 2 * var(--margin));
+      --inset: calc(2px + 0.5rem);
+      --text-width: calc(min(48rem, var(--frame)) - 2 * var(--inset));
+    }
+
     #content :global(figure) {
       @apply my-4;
     }
@@ -188,6 +195,125 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
       text-align: center;
       text-wrap: balance;
       word-break: auto-phrase;
+    }
+
+    #content {
+      --figure-max-width: 100cqi;
+      --figure-height: 80svh;
+    }
+
+    #content :global(img) {
+      width: auto;
+      max-width: min(100%, var(--figure-max-width));
+      height: auto;
+      max-height: var(--figure-height);
+      margin-inline: auto;
+    }
+
+    #content :global(.figure-group) {
+      --bleed-left: calc(var(--margin) + var(--inset));
+      --bleed-right: calc(
+        100cqi - var(--margin) - min(48rem, var(--frame)) + var(--inset)
+      );
+      margin-block: 0.5rem;
+      margin-inline: calc(-1 * var(--bleed-left)) calc(-1 * var(--bleed-right));
+    }
+    #content :global(.figure-images) {
+      position: relative;
+      display: flex;
+      gap: 0.5rem;
+      box-sizing: content-box;
+      padding-block: 0.5rem;
+      background: #fef1e2;
+      width: var(--figure-width);
+      margin-block: 0;
+      margin-inline: auto;
+    }
+    #content :global(.figure-group) {
+      --figure-width: min(
+        100%,
+        var(--figure-height) * var(--ratio-sum) + (var(--count) - 1) * 0.5rem
+      );
+    }
+    #content :global(.figure-group[data-count="1"]) {
+      --figure-width: min(
+        100%,
+        var(--figure-height) * var(--ratio-sum),
+        var(--figure-max-width)
+      );
+    }
+    #content :global(.figure-item) {
+      position: relative;
+      flex: calc(var(--ratio) * 100) 1 0;
+      min-width: 0;
+      margin: 0;
+    }
+    #content :global(.figure-item > img) {
+      width: 100%;
+      max-width: none;
+      max-height: none;
+      margin: 0;
+    }
+    #content :global(.figure-caption) {
+      position: absolute;
+      left: 0.5rem;
+      bottom: 0.5rem;
+      max-width: calc(100% - 1rem);
+      padding: 0.125rem 0.5rem;
+      background: rgb(254 241 226 / 0.9);
+      line-height: 1.5;
+      font-size: 0.85em;
+      text-align: left;
+    }
+    #content :global(.figure-images > .figure-caption) {
+      left: 1rem;
+      bottom: 1rem;
+      max-width: calc(100% - 2rem);
+    }
+
+    @container document (max-width: 40rem) {
+      #content :global(.figure-group:not([data-count="1"])) {
+        --figure-width: 100%;
+      }
+      #content :global(.figure-group:not([data-count="1"]) .figure-images) {
+        flex-direction: column;
+        align-items: center;
+      }
+      #content :global(.figure-group:not([data-count="1"]) .figure-item) {
+        flex: none;
+        width: min(
+          100%,
+          var(--figure-height) * var(--ratio),
+          var(--figure-max-width)
+        );
+      }
+    }
+
+    @container document (min-width: 72rem) {
+      .article-column {
+        --rail: calc(18rem + clamp(1rem, 2cqi, 2rem));
+        --column: min(48rem, var(--frame) - var(--rail));
+        --gutter: calc(var(--frame) - var(--column) - var(--rail));
+        --text-width: calc(var(--column) - 2 * var(--inset));
+        width: var(--column);
+        max-width: none;
+        margin-left: auto;
+        margin-right: var(--rail);
+      }
+
+      #content {
+        --figure-height: 60svh;
+      }
+      #content :global(.figure-group) {
+        --bleed-left: calc(var(--gutter) + var(--inset));
+        --bleed-right: 0px;
+      }
+      #content :global(.figure-images) {
+        margin-right: max(
+          0px,
+          (var(--text-width) - var(--figure-width)) / 2
+        );
+      }
     }
 
     #content {

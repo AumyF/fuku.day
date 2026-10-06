@@ -1,15 +1,58 @@
 ---
-type Props = { caption?: string };
+type Props = { caption?: string; captions?: string[] };
 
-const { caption } = Astro.props;
+const { caption, captions = [] } = Astro.props;
+
+const html = Astro.slots.has("default")
+  ? await Astro.slots.render("default")
+  : "";
+const captionSlot = Astro.slots.has("caption")
+  ? await Astro.slots.render("caption")
+  : "";
+
+const imgTags = html.match(/<img\b[^>]*>/g) ?? [];
+const onlyImages =
+  imgTags.length > 0 &&
+  html.replace(/<img\b[^>]*>|<\/?p>/g, "").trim() === "";
+
+const attr = (tag: string, name: string) =>
+  Number(tag.match(new RegExp(`\\s${name}="(\\d+(?:\\.\\d+)?)"`))?.[1]);
+
+const ratios = imgTags.map((tag) => {
+  const ratio = attr(tag, "width") / attr(tag, "height");
+  return Number.isFinite(ratio) && ratio > 0 ? ratio : 1;
+});
+const ratioSum = ratios.reduce((sum, ratio) => sum + ratio, 0);
+const hasGroupCaption = Boolean(caption || captionSlot.trim());
 ---
 
-<div class="mx-auto my-4 max-w-full">
-  <div class="flex flex-wrap gap-2 [&>img]:h-auto [&>img]:max-w-full [&>img]:min-w-[min(100%,280px)] [&>img]:grow [&>img]:shrink-0 [&>img]:basis-[280px]">
-    <slot />
-  </div>
-  <div class="mt-2 text-center text-[0.9em] leading-normal text-balance [word-break:auto-phrase] text-[var(--fg-weak)]">
-    {caption}
-    <slot name="caption" />
-  </div>
+<div
+  class="figure-group"
+  data-count={imgTags.length}
+  style={`--ratio-sum:${ratioSum};--count:${imgTags.length}`}
+>
+  <figure class="figure-images">
+    {
+      onlyImages ? (
+        imgTags.map((tag, i) => (
+          <figure class="figure-item" style={`--ratio:${ratios[i]}`}>
+            <Fragment set:html={tag} />
+            {captions[i] && (
+              <figcaption class="figure-caption">{captions[i]}</figcaption>
+            )}
+          </figure>
+        ))
+      ) : (
+        <Fragment set:html={html} />
+      )
+    }
+    {
+      hasGroupCaption && (
+        <figcaption class="figure-caption">
+          {caption}
+          <Fragment set:html={captionSlot} />
+        </figcaption>
+      )
+    }
+  </figure>
 </div>

@@ -1,0 +1,9 @@
+{
+  "ci": {
+    "collect": { "staticDistDir": "./dist" },
+    "assert": {
+      "preset": "lighthouse:recommended",
+      "assertions": { "network-dependency-tree-insight": "off" }
+    }
+  }
+}

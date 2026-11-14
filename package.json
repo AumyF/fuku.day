@@ -25,11 +25,11 @@
     "remark-mdx": "^3.1.1",
     "remark-parse": "^11.0.0",
     "satori": "^0.26.0",
-    "svelte": "^5.56.4",
+    "svelte": "^5.57.3",
     "tailwindcss": "^4.3.2",
     "typescript": "^5.9.3",
     "unified": "^11.0.5",
-    "unist-util-visit": "^5.1.0"
+    "unist-util-visit": "^5.2.0"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",

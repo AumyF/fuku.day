@@ -33,9 +33,7 @@ const cloneWithoutBackrefs = (nodes: ElementContent[]): ElementContent[] => {
 };
 
 const footnoteIdFromHref = (href: unknown) =>
-  typeof href === "string" && href.startsWith("#")
-    ? href.slice(1)
-    : undefined;
+  typeof href === "string" && href.startsWith("#") ? href.slice(1) : undefined;
 
 const createSidenotesPlugin = () => {
   const references = new Map<string, { id: string; number: string }>();
@@ -69,8 +67,7 @@ const createSidenotesPlugin = () => {
           if (footnotes.properties.dataFootnotes === undefined) return;
 
           const list = footnotes.children.find(
-            (node): node is Element =>
-              isElement(node) && node.tagName === "ol",
+            (node): node is Element => isElement(node) && node.tagName === "ol",
           );
           if (!list) return;
 

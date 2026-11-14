@@ -34,7 +34,7 @@ export async function GET(context: APIContext) {
         link: `/blog/${post.id}`,
         pubDate: pubDate(post.id),
         content: await container.renderToString((await render(post)).Content),
-      }))
+      })),
     ),
   });
 }

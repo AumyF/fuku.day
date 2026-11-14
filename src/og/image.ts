@@ -37,7 +37,7 @@ async function ensureWasmInitialized() {
 }
 
 const weights = [500, 600] as const;
-type FontWeight = typeof weights[number];
+type FontWeight = (typeof weights)[number];
 
 let fontDataPromise:
   | Promise<

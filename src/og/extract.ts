@@ -19,12 +19,19 @@ export function extractBodyText(entry: CollectionEntry<"blog">): string {
     if (SKIP_SUBTREE_TYPES.has(node.type)) {
       return SKIP;
     }
-    if (node.type === "mdxJsxFlowElement" || node.type === "mdxJsxTextElement") {
+    if (
+      node.type === "mdxJsxFlowElement" ||
+      node.type === "mdxJsxTextElement"
+    ) {
       // JSX attributes (e.g. caption="...") are not article prose; descend
       // into children only, where nested prose (e.g. inside <VideoContext>) lives.
       return;
     }
-    if (TEXT_NODE_TYPES.has(node.type) && "value" in node && typeof node.value === "string") {
+    if (
+      TEXT_NODE_TYPES.has(node.type) &&
+      "value" in node &&
+      typeof node.value === "string"
+    ) {
       parts.push(node.value);
     }
     return;

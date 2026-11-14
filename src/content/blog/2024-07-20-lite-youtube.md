@@ -8,6 +8,7 @@ description: "YouTubeのiframe埋め込みは特に大量に配置したとき�
 最近よかった曲のまとめとしてYouTubeのiframe埋め込みを貼りまくったブログ[^music]を書いているが、素直に埋め込みを入れるとページロード時に大量のリクエストが走るのでパフォーマンスがたいへん[^taihen]悪化する。
 
 [^music]: [/blog/2024-06-30-music-2024-q2](/blog/2024-06-30-music-2024-q2) など
+
 [^taihen]: これだけでLighthouseが60点ぐらいまで下がる
 
 Googleからもいろいろと対応策が紹介されていて、その中にある `@justinribeiro/lite-youtube` というパッケージを使うとパフォーマンスを100点近くまで改善できる。

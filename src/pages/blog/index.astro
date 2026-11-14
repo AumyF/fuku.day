@@ -12,25 +12,19 @@ posts.reverse();
 <Layout title="Blog index / Aumy">
   <div class="border-2 border-[#06275e] px-4 vstack gap-5">
     <h1 class="text-3xl my-4 font-bold">Blog Index</h1>
-    {
-      posts.map((post) => {
-        return (
-          <article>
-            <div class="block text-2xl mb-2 font-bold">
-              <a
-                href={`/blog/${post.id}`}
-              >
-                {post.data.title}
-              </a>
-            </div>
-            <div>
-              {post.id}
-              <br />
-              {post.data.description}
-            </div>
-          </article>
-        );
-      })
-    }
+    {posts.map((post) => {
+      return (
+        <article>
+          <div class="block text-2xl mb-2 font-bold">
+            <a href={`/blog/${post.id}`}>{post.data.title}</a>
+          </div>
+          <div>
+            {post.id}
+            <br />
+            {post.data.description}
+          </div>
+        </article>
+      );
+    })}
   </div>
 </Layout>

@@ -24,41 +24,37 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
 >
   <div id="toc" popover class="peer z-50 m-auto bg-transparent p-2">
     <!-- TODO: iOSとかで出たり入ったりするナビゲーションでsvhが動いちゃうんだけどこれってsafe-area-insetでいいんだっけ？ -->
-    <ul
-      class="space-y-1 max-h-[50svh] p-2 overflow-scroll bg-[#fef1e2]/90 backdrop-blur border-2 border-[#06275e]"
-    >
-      {
-        rendered.headings
-          .filter((heading) => heading.slug !== "footnote-label")
-          .map((heading) => {
-            return (
-              <li>
-                {(() => {
-                  switch (heading.depth) {
-                    case 2:
-                      return (
-                        <a class={`block pl-2`} href={`#${heading.slug}`}>
-                          {heading.text}
-                        </a>
-                      );
-                    case 3:
-                      return (
-                        <a class={`block pl-4`} href={`#${heading.slug}`}>
-                          {heading.text}
-                        </a>
-                      );
-                    case 4:
-                      return (
-                        <a class={`block pl-6`} href={`#${heading.slug}`}>
-                          {heading.text}
-                        </a>
-                      );
-                  }
-                })()}
-              </li>
-            );
-          })
-      }
+    <ul class="space-y-1 max-h-[50svh] p-2 overflow-scroll bg-[#fef1e2]/90 backdrop-blur border-2 border-[#06275e]">
+      {rendered.headings
+        .filter((heading) => heading.slug !== "footnote-label")
+        .map((heading) => {
+          return (
+            <li>
+              {(() => {
+                switch (heading.depth) {
+                  case 2:
+                    return (
+                      <a class={`block pl-2`} href={`#${heading.slug}`}>
+                        {heading.text}
+                      </a>
+                    );
+                  case 3:
+                    return (
+                      <a class={`block pl-4`} href={`#${heading.slug}`}>
+                        {heading.text}
+                      </a>
+                    );
+                  case 4:
+                    return (
+                      <a class={`block pl-6`} href={`#${heading.slug}`}>
+                        {heading.text}
+                      </a>
+                    );
+                }
+              })()}
+            </li>
+          );
+        })}
     </ul>
   </div>
 
@@ -86,42 +82,35 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
   </aside>
 
   <!-- 兄弟要素 -->
-  <div
-    class="w-fit z-50 fixed bottom-2 right-2 [--content:'開く'] peer-[&:popover-open]:[--content:'閉じる']"
-  >
+  <div class="w-fit z-50 fixed bottom-2 right-2 [--content:'開く'] peer-[&:popover-open]:[--content:'閉じる']">
     <button
       popovertarget="toc"
       type="button"
       class="px-4 bg-[#fef1e2]/90 backdrop-blur border-2 border-[#06275e] after:[content:var(--content)] cursor-pointer"
-      >目次
+    >
+      目次{" "}
     </button>
   </div>
 
-  <div
-    class="article-column grow px-2 [overflow-wrap:anywhere] max-w-[min(theme(maxWidth.3xl),100%)] border-x-2 border-[#06275e] [font-size:clamp(0.875rem,_0.792rem_+_0.42cqi,_1rem)]"
-  >
+  <div class="article-column grow px-2 [overflow-wrap:anywhere] max-w-[min(theme(maxWidth.3xl),100%)] border-x-2 border-[#06275e] [font-size:clamp(0.875rem,_0.792rem_+_0.42cqi,_1rem)]">
     <article>
       <div>
         <p class="text-center mt-6">
           <code>@aumy_f, {post.id}:</code>
         </p>
-        <p
-          class="text-center font-mono w-10/12 mx-auto text-balance [word-break:auto-phrase]"
-        >
+        <p class="text-center font-mono w-10/12 mx-auto text-balance [word-break:auto-phrase]">
           {post.data.description}
         </p>
         <hr class="border-[#06275e] border-t-2 block w-11/12 mx-auto mt-12" />
       </div>
 
-      <h1
-        class="text-3xl leading-normal font-bold text-right mt-6 pr-2 mb-4 [font-feature-settings:'palt'] text-pretty [word-break:auto-phrase]"
-      >
+      <h1 class="text-3xl leading-normal font-bold text-right mt-6 pr-2 mb-4 [font-feature-settings:'palt'] text-pretty [word-break:auto-phrase]">
         {post.data.title}
       </h1>
 
       <div id="content">
         <rendered.Content />
-        <svg data-sidenote-connectors aria-hidden="true" ></svg>
+        <svg data-sidenote-connectors aria-hidden="true"></svg>
       </div>
     </article>
   </div>
@@ -309,10 +298,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
         --bleed-right: 0px;
       }
       #content :global(.figure-images) {
-        margin-right: max(
-          0px,
-          (var(--text-width) - var(--figure-width)) / 2
-        );
+        margin-right: max(0px, (var(--text-width) - var(--figure-width)) / 2);
       }
     }
 
@@ -490,9 +476,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
       );
 
       const footnoteId = (element: Element | null) =>
-        element instanceof HTMLElement
-          ? element.dataset.footnoteId
-          : undefined;
+        element instanceof HTMLElement ? element.dataset.footnoteId : undefined;
 
       const isWide = () =>
         getComputedStyle(content)
@@ -510,22 +494,18 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
           ...references.filter(
             (reference) => reference.dataset.footnoteId === id,
           ),
-          ...sidenotes.filter(
-            (sidenote) => sidenote.dataset.footnoteId === id,
-          ),
+          ...sidenotes.filter((sidenote) => sidenote.dataset.footnoteId === id),
         ];
         const active = related.some(
           (element) =>
             element.matches(":hover") || element.matches(":focus-within"),
         );
 
-        connectors
-          ?.querySelectorAll<SVGPathElement>("path")
-          .forEach((path) => {
-            if (path.dataset.footnoteId === id) {
-              path.classList.toggle("is-active", active);
-            }
-          });
+        connectors?.querySelectorAll<SVGPathElement>("path").forEach((path) => {
+          if (path.dataset.footnoteId === id) {
+            path.classList.toggle("is-active", active);
+          }
+        });
       };
 
       let layoutFrame = 0;
@@ -572,8 +552,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
             Number.parseFloat(getComputedStyle(reference).lineHeight) ||
             referenceRect.height;
           const upwardOffset = referenceLineHeight / 2;
-          const desiredTop =
-            referenceRect.top - contentRect.top - upwardOffset;
+          const desiredTop = referenceRect.top - contentRect.top - upwardOffset;
           const top = Math.max(desiredTop, previousBottom + 12);
           sidenote.style.top = `${top}px`;
 
@@ -594,8 +573,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
           const firstControlX = startX + lineWidth / 3;
           const secondControlX = startX + (lineWidth * 2) / 3;
           const firstControlY = startY + lineRise / 3 + waveAmplitude;
-          const secondControlY =
-            startY + (lineRise * 2) / 3 - waveAmplitude;
+          const secondControlY = startY + (lineRise * 2) / 3 - waveAmplitude;
           const path = document.createElementNS(
             "http://www.w3.org/2000/svg",
             "path",
@@ -674,14 +652,12 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
           sidenote?.getAttribute("aria-label") ?? "脚注",
         );
         sheetNumber.textContent = number.textContent;
-        sheetBody.replaceChildren(...Array.from(body.childNodes, (node) =>
-          node.cloneNode(true),
-        ));
+        sheetBody.replaceChildren(
+          ...Array.from(body.childNodes, (node) => node.cloneNode(true)),
+        );
         sheet.dataset.returnFocus = reference.id;
         if (!sheet.matches(":popover-open")) sheet.showPopover();
-        requestAnimationFrame(() =>
-          sheetClose?.focus({ preventScroll: true }),
-        );
+        requestAnimationFrame(() => sheetClose?.focus({ preventScroll: true }));
       });
 
       sheet.addEventListener("toggle", (event) => {
@@ -689,9 +665,7 @@ const imageUrl = new URL(`/blog/${post.id}.png`, Astro.site).href;
         const returnFocus = sheet.dataset.returnFocus;
         delete sheet.dataset.returnFocus;
         if (returnFocus) {
-          document
-            .getElementById(returnFocus)
-            ?.focus({ preventScroll: true });
+          document.getElementById(returnFocus)?.focus({ preventScroll: true });
         }
       });
 

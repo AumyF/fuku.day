@@ -7,12 +7,10 @@ const { links } = Astro.props;
 ---
 
 <div class="flex gap-4 flex-wrap">
-  {
-    links.map(([username, service, href]) => (
-      <a href={href} class="underline-offset-4">
-        <span class="select-none">@</span>
-        <span>{service}</span>: <span class="username">{username}</span>
-      </a>
-    ))
-  }
+  {links.map(([username, service, href]) => (
+    <a href={href} class="underline-offset-4">
+      <span class="select-none">@</span> <span>{service}</span>:{" "}
+      <span class="username">{username}</span>
+    </a>
+  ))}
 </div>

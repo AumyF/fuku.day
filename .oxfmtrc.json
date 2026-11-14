@@ -2,11 +2,14 @@
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "printWidth": 80,
   "svelte": true,
+  "astro": true,
   "ignorePatterns": ["dist/**", ".astro/**", "package-lock.json"],
   "overrides": [
     {
       "files": ["**/*.md", "**/*.mdx"],
-      "options": { "embeddedLanguageFormatting": "off" }
+      "options": {
+        "embeddedLanguageFormatting": "off"
+      }
     }
   ]
 }

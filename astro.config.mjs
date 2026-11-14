@@ -11,7 +11,7 @@ import createSidenotesPlugin from "./src/lib/rehype-sidenotes.ts";
 // https://astro.build/config
 export default defineConfig({
   site: "https://fuku.day",
-  compressHTML: true,
+  compressHTML: "jsx",
   integrations: [svelte(), mdx()],
   markdown: {
     processor: satteri({

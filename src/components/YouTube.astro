@@ -15,16 +15,14 @@ const contextId = `video-context-${Math.random().toString(36).substr(2, 9)}`;
 <div class="yt-container" data-video-context={contextId}>
   <div class="wrapper">
     <slot />
-    {
-      videoid && (
-        <lite-youtube
-          videoid={videoid}
-          autoload
-          posterquality="default"
-          params="enablejsapi=1"
-        />
-      )
-    }
+    {videoid && (
+      <lite-youtube
+        videoid={videoid}
+        autoload
+        posterquality="default"
+        params="enablejsapi=1"
+      />
+    )}
   </div>
   <div class="caption">
     {caption}
@@ -34,20 +32,22 @@ const contextId = `video-context-${Math.random().toString(36).substr(2, 9)}`;
 
 <script>
   // クライアントサイドでのみlite-youtubeをimport
-  import('@justinribeiro/lite-youtube/lite-youtube.js').then(() => {
+  import("@justinribeiro/lite-youtube/lite-youtube.js").then(() => {
     // 全てのlite-youtube要素にイベントリスナーを追加
-    document.querySelectorAll('lite-youtube').forEach((liteYoutube) => {
-      liteYoutube.addEventListener('liteYoutubeIframeLoaded', ((e: CustomEvent) => {
+    document.querySelectorAll("lite-youtube").forEach((liteYoutube) => {
+      liteYoutube.addEventListener("liteYoutubeIframeLoaded", ((
+        e: CustomEvent,
+      ) => {
         const target = e.target as HTMLElement;
         if (!target.shadowRoot) return;
 
-        const iframe = target.shadowRoot.querySelector('iframe');
+        const iframe = target.shadowRoot.querySelector("iframe");
         if (!iframe) return;
 
         // lite-youtube要素にiframe参照を保存
         (liteYoutube as any).__iframe = iframe;
 
-        console.log('YouTube iframe loaded and stored');
+        console.log("YouTube iframe loaded and stored");
       }) as EventListener);
     });
   });

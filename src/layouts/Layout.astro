@@ -30,16 +30,14 @@ const { title, image, wide = false } = Astro.props;
       property="og:description"
       content={Astro.props.description || "AumyF's website"}
     />
-    {
-      image && (
-        <>
-          <meta property="og:image" content={image} />
-          <meta property="og:image:width" content="1200" />
-          <meta property="og:image:height" content="630" />
-          <meta name="twitter:card" content="summary_large_image" />
-        </>
-      )
-    }
+    {image && (
+      <>
+        <meta property="og:image" content={image} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </>
+    )}
     <title>{title}</title>
   </head>
   <body class="">
@@ -49,9 +47,13 @@ const { title, image, wide = false } = Astro.props;
         !wide && "max-w-6xl",
       ]}
     >
-      <div class="max-w-6xl"><Header /></div>
+      <div class="max-w-6xl">
+        <Header />
+      </div>
       <slot />
-      <div class="max-w-6xl grow vstack"><Footer /></div>
+      <div class="max-w-6xl grow vstack">
+        <Footer />
+      </div>
     </div>
   </body>
 </html>

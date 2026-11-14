@@ -12,8 +12,7 @@ const captionSlot = Astro.slots.has("caption")
 
 const imgTags = html.match(/<img\b[^>]*>/g) ?? [];
 const onlyImages =
-  imgTags.length > 0 &&
-  html.replace(/<img\b[^>]*>|<\/?p>/g, "").trim() === "";
+  imgTags.length > 0 && html.replace(/<img\b[^>]*>|<\/?p>/g, "").trim() === "";
 
 const attr = (tag: string, name: string) =>
   Number(tag.match(new RegExp(`\\s${name}="(\\d+(?:\\.\\d+)?)"`))?.[1]);
@@ -32,27 +31,23 @@ const hasGroupCaption = Boolean(caption || captionSlot.trim());
   style={`--ratio-sum:${ratioSum};--count:${imgTags.length}`}
 >
   <figure class="figure-images">
-    {
-      onlyImages ? (
-        imgTags.map((tag, i) => (
-          <figure class="figure-item" style={`--ratio:${ratios[i]}`}>
-            <Fragment set:html={tag} />
-            {captions[i] && (
-              <figcaption class="figure-caption">{captions[i]}</figcaption>
-            )}
-          </figure>
-        ))
-      ) : (
-        <Fragment set:html={html} />
-      )
-    }
-    {
-      hasGroupCaption && (
-        <figcaption class="figure-caption">
-          {caption}
-          <Fragment set:html={captionSlot} />
-        </figcaption>
-      )
-    }
+    {onlyImages ? (
+      imgTags.map((tag, i) => (
+        <figure class="figure-item" style={`--ratio:${ratios[i]}`}>
+          <Fragment set:html={tag} />
+          {captions[i] && (
+            <figcaption class="figure-caption">{captions[i]}</figcaption>
+          )}
+        </figure>
+      ))
+    ) : (
+      <Fragment set:html={html} />
+    )}
+    {hasGroupCaption && (
+      <figcaption class="figure-caption">
+        {caption}
+        <Fragment set:html={captionSlot} />
+      </figcaption>
+    )}
   </figure>
 </div>

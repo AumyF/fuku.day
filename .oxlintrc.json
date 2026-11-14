@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": ["dist/**", ".astro/**"],
+  "overrides": [
+    {
+      "files": ["src/env.d.ts"],
+      "rules": { "typescript/triple-slash-reference": "off" }
+    }
+  ]
+}

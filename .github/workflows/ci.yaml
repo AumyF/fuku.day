@@ -9,5 +9,7 @@ jobs:
         with:
           node-version: 22
       - run: npm ci && npm install -g @lhci/cli@0.15.x
+      - run: npm run lint
+      - run: npm run fmt:check
       - run: npm run build
       - run: lhci autorun

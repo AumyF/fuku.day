@@ -1,6 +1,7 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "astro": true,
+  "printWidth": 80,
+  "embeddedLanguageFormatting": "off",
   "svelte": true,
   "ignorePatterns": ["dist/**", ".astro/**", "package-lock.json"]
 }

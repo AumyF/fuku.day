@@ -14,7 +14,7 @@
     "@astrojs/markdown-satteri": "^0.3.3",
     "@astrojs/mdx": "^7.0.2",
     "@astrojs/rss": "^4.0.19",
-    "@astrojs/svelte": "^9.0.1",
+    "@astrojs/svelte": "^9.1.5",
     "@fontsource/noto-sans-jp": "^5.2.9",
     "@fontsource/noto-serif-jp": "^5.2.8",
     "@justinribeiro/lite-youtube": "^1.7.1",

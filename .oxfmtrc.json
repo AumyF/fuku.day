@@ -6,7 +6,7 @@
   "ignorePatterns": ["dist/**", ".astro/**", "package-lock.json"],
   "overrides": [
     {
-      "files": ["**/*.md", "**/*.mdx"],
+      "files": ["**/*.mdx"],
       "options": {
         "embeddedLanguageFormatting": "off"
       }
